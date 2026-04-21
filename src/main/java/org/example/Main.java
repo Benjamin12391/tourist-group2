@@ -38,7 +38,6 @@ public class Main {
 
             Hotel hotel= new Hotel(id,category,name,owner, contact, address, city, cityCode, phone, noRooms, noBeds);
             hotels.add(hotel);
-
         }
         hotels.forEach(System.out::println);
 
