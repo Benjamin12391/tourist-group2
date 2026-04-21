@@ -6,14 +6,18 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class Hotel {
-    //id,rooms,usedrooms,beds,usedbeds,year,month
-    int  id;
-    int  room;
-    int usedrooms;
-    int beds;
-    int usedbeds;
-    int year;
-    int month;
+    int id;
+    String category;
+    String name;
+    String owner;
+    String contact;
+    String address;
+    String city;
+    String citycode;
+    String phone;
+    int noRooms;
+    int noBeds;
+
 
 
 }
