@@ -8,9 +8,9 @@ import java.util.Scanner;
 
 public class occupanciesutil {
     public static List<occupancies> master_data_occupancies() throws FileNotFoundException {
-        String path="src/main/resources/Hotels.csv";
+        String path="src/main/resources/Hoteldata.csv";
         Scanner sc = new Scanner(new File(path));
-        List<occupancies> hoteldata=new ArrayList<>();
+        ArrayList<occupancies> hoteldata=new ArrayList<>();
         while (sc.hasNextLine()) {
             String l=sc.nextLine();
             String[] p=l.split(",");
