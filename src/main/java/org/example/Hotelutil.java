@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Hotelutil {
-    public static void HotelData() throws FileNotFoundException {
+    public static ArrayList<Hotel> HotelData() throws FileNotFoundException {
         String path="src/main/resources/Hoteldata.csv";
         Scanner sc = new Scanner(new File(path));
         ArrayList<Hotel> hotels = new ArrayList<>();
@@ -34,5 +34,6 @@ public class Hotelutil {
             hotels.add(hotel);
         }
         hotels.forEach(System.out::println);
+        return  hotels;
     }
 }
