@@ -20,7 +20,7 @@ public class EditingWindow_transaction extends JDialog {
         add(okbutton, BorderLayout.SOUTH);
 
         okbutton.addActionListener(e -> {
-           //occupancies.setName("Changed by Button"); klapt ned
+           //occupancies.setName("Changed by Button");
            okAction.run();
 
            dispose();

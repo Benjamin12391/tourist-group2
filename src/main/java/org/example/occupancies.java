@@ -6,7 +6,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class occupancies {
-    //id,rooms,usedrooms,beds,usedbeds,year,month
     int  id;
     int  room;
     int usedrooms;
