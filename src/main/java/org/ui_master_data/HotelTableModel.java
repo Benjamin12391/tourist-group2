@@ -51,6 +51,16 @@ public  class HotelTableModel extends AbstractTableModel {
             default -> null;
         };
     }
+
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        if(columnIndex == 0||columnIndex == 9||columnIndex == 10){
+            return Integer.class;
+        }
+        return String.class;
+
+    }
+
     public Hotel getHotel(int in){
         return hotels.get(in);
     }

@@ -48,6 +48,12 @@ public  class HotelTableModel_transaction extends AbstractTableModel {
             default -> null;
         };
     }
+
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        return Integer.class;
+    }
+
     public occupancies getHotel(int in){
         return hotels.get(in);
     }

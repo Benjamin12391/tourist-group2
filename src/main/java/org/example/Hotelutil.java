@@ -27,8 +27,9 @@ public class Hotelutil {
             String city = parts[6];
             String cityCode = parts[7];
             String phone = parts[8];
-            int noRooms = Integer.parseInt(parts[9]);
-            int noBeds = Integer.parseInt(parts[10]);
+            int noRooms = Integer.parseInt(parts[parts.length-2]);
+            int noBeds = Integer.parseInt(parts[parts.length-1]);
+
 
             Hotel hotel= new Hotel(id,category,name,owner, contact, address, city, cityCode, phone, noRooms, noBeds);
             hotels.add(hotel);

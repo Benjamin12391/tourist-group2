@@ -28,6 +28,7 @@ public class MainFrame_transaction extends JFrame {
         HotelTableModel_transaction model = new HotelTableModel_transaction((ArrayList<occupancies>) occupanciesutil.master_data_occupancies());
 
         table.setModel(model);
+        table.setAutoCreateRowSorter(true);
 
 
 
@@ -35,10 +36,11 @@ public class MainFrame_transaction extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if(e.getClickCount()==2){
-                    int row = table.getSelectedRow();
-                    if(row>0){
-                        occupancies temp= model.getHotel(row);
-                        new EditingWindow_transaction(MainFrame_transaction.this, temp,()-> model.refreshRow(row)).setVisible(true);
+                    int viewRow = table.getSelectedRow();
+                    if(viewRow >= 0){
+                        int modelRow = table.convertRowIndexToModel(viewRow);
+                        occupancies temp= model.getHotel(modelRow);
+                        new EditingWindow_transaction(MainFrame_transaction.this, temp,()-> model.refreshRow(modelRow)).setVisible(true);
                     }
 
                 }
