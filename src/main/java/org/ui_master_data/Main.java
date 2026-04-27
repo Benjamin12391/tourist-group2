@@ -8,7 +8,7 @@ public class Main {
         new MainFrame().setVisible(true);
 
 
-        summarydata.summarydata();
+        //summarydata.summarydata();
 
 
     }

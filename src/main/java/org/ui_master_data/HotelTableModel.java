@@ -51,6 +51,29 @@ public  class HotelTableModel extends AbstractTableModel {
             default -> null;
         };
     }
+    @Override
+    public void setValueAt(Object value, int rowIndex, int columnIndex) {
+        Hotel h = hotels.get(rowIndex);
+        switch(columnIndex) {
+            case 1 -> h.setCategory(value.toString());
+            case 2 -> h.setName(value.toString());
+            case 3 -> h.setOwner(value.toString());
+            case 4 -> h.setContact(value.toString());
+            case 5 -> h.setAddress(value.toString());
+            case 6 -> h.setCity(value.toString());
+            case 7 -> h.setCitycode(value.toString());
+            case 8 -> h.setPhone(value.toString());
+            case 9 -> h.setNoRooms(Integer.parseInt(value.toString()));
+            case 10 -> h.setNoBeds(Integer.parseInt(value.toString()));
+
+        }
+
+        fireTableCellUpdated(rowIndex, columnIndex);
+    }
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return columnIndex != 0;
+    }
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {

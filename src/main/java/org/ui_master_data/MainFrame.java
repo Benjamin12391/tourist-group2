@@ -23,7 +23,7 @@ public class MainFrame extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         JTable table= new JTable();
-        table.setDefaultEditor(Object.class, null);
+
         ArrayList<Hotel> allhotels=new ArrayList<>();
 
 
@@ -32,49 +32,18 @@ public class MainFrame extends JFrame {
         table.setRowSorter(sorter);
 
         table.setModel(model);
+        // Edit a sinlge cell
+        table.setRowSelectionAllowed(false);
+        table.setColumnSelectionAllowed(false);
+        table.setCellSelectionEnabled(true);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         table.setAutoCreateRowSorter(true);
         int colcount=table.getColumnCount();
         String[] header=new String[colcount];
-        for(int i=0;i<colcount;i++){
-            header[i]=table.getColumnName(i);
+        for(int i=0;i<colcount;i++) {
+            header[i] = table.getColumnName(i);
         }
-
-        table.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if(e.getClickCount()==2){
-                    int viewRow = table.getSelectedRow();
-                    if(viewRow >= 0){
-                        int modelRow = table.convertRowIndexToModel(viewRow);
-                        Hotel temp= model.getHotel(modelRow);
-                        new EditingWindow(MainFrame.this, temp,()-> model.refreshRow(modelRow), colcount, header).setVisible(true);
-                    }
-
-                }
-
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
-            }
-        });
         JPanel north=new JPanel();
         north.setLayout(new GridLayout(1,5));
         add(new JScrollPane(table), BorderLayout.CENTER);
@@ -83,6 +52,36 @@ public class MainFrame extends JFrame {
         JTextField jtfname=new JTextField();
         jtfname.setColumns(20);
         north.add(jtfname,BorderLayout.NORTH);
+        JButton execute=new JButton("execute");
+        execute.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                RowFilter<HotelTableModel, Object> filter =null;
+                String txt=jtfname.getText();
+                if (!txt.isBlank()) {
+                    if(txt.contains("*")){
+                        String tneu="";
+                        for(int i=0;i<txt.length();i++){
+                            if(txt.charAt(i)=='*'){
+                                tneu+="\\";
+                            }
+                            tneu+=txt.charAt(i);
+                        }
+
+                        txt=tneu+"$";
+                    }
+                    filter = RowFilter.regexFilter("^" + txt);
+
+                }
+
+                sorter.setRowFilter(filter);
+                table.setRowSorter(sorter);
+            }
+
+        });
+        north.add(execute);
+        add(north,BorderLayout.NORTH);
+
         JButton summary = new JButton("Summary");
         north.add(summary);
         summary.addMouseListener(new MouseListener() {
@@ -116,38 +115,9 @@ public class MainFrame extends JFrame {
 
             }
         });
-        JComboBox<String> aggregation=new JComboBox<>(header);
-        north.add(aggregation);
 
-        JButton execute=new JButton("execute");
-        execute.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                RowFilter<HotelTableModel, Object> filter =null;
-                String txt=jtfname.getText();
-                if (!txt.isBlank()) {
-                    if(txt.contains("*")){
-                        String tneu="";
-                        for(int i=0;i<txt.length();i++){
-                            if(txt.charAt(i)=='*'){
-                                tneu+="\\";
-                            }
-                            tneu+=txt.charAt(i);
-                        }
 
-                        txt=tneu+"$";
-                    }
-                    filter = RowFilter.regexFilter("^" + txt);
 
-                }
-
-                sorter.setRowFilter(filter);
-                table.setRowSorter(sorter);
-            }
-
-        });
-        north.add(execute);
-        add(north,BorderLayout.NORTH);
 
 
 
