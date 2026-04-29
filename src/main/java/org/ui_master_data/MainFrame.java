@@ -115,6 +115,14 @@ public class MainFrame extends JFrame {
 
             }
         });
+        JButton newHotel = new JButton("New Hotel");
+        north.add(newHotel);
+        newHotel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new newHotelwindow().setVisible(true);
+            }
+        });
 
 
 
