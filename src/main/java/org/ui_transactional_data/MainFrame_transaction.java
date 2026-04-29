@@ -19,8 +19,8 @@ public class MainFrame_transaction extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         JTable table= new JTable();
-        table.setDefaultEditor(Object.class, null);
-        ArrayList<Hotel> allhotels=new ArrayList<>();
+        //table.setDefaultEditor(Object.class, null);
+        ArrayList<Hotel> allhotels=Hotelutil.HotelData();
 
 
 
@@ -68,6 +68,10 @@ public class MainFrame_transaction extends JFrame {
             }
         });
         add(new JScrollPane(table));
+
+
+
+
 
 
 

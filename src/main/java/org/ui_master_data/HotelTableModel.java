@@ -83,7 +83,20 @@ public  class HotelTableModel extends AbstractTableModel {
         return String.class;
 
     }
-
+    public int maxId(){
+        int max = 0;
+        for(Hotel h : hotels){
+            if(h.getId()>max){
+                max = h.getId();
+            }
+        }
+        return max;
+    }
+    public void addHotel(Hotel hotel) {
+        int row = hotels.size();
+        hotels.add(hotel);
+        fireTableRowsInserted(row, row);
+    }
     public Hotel getHotel(int in){
         return hotels.get(in);
     }
