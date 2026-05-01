@@ -41,7 +41,7 @@ public class newOccupanciesWindow extends JFrame {
             }
 
             org.example.occupancies newOc = new org.example.occupancies(
-                    id,                                 // Die ID vom neuen Hotel[cite: 16]
+                    id,                                 // Die ID
                     Integer.parseInt(t1[0]),            // rooms
                     Integer.parseInt(t1[1]),            // usedrooms
                     Integer.parseInt(t1[2]),            // beds
