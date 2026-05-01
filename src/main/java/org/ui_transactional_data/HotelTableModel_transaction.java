@@ -1,8 +1,7 @@
 package org.ui_transactional_data;
 
 
-
-import org.example.Hotel;
+import lombok.Getter;
 import org.example.occupancies;
 
 import javax.swing.table.AbstractTableModel;
@@ -11,6 +10,7 @@ import java.util.ArrayList;
 
 public  class HotelTableModel_transaction extends AbstractTableModel {
     private ArrayList<occupancies> hotels;
+    private HotelTableModel_transaction model;
 
     private String[] cols= {"id","rooms","usedrooms","beds","usedbeds","year","month"};
     HotelTableModel_transaction(ArrayList<occupancies> hotels){
@@ -61,5 +61,15 @@ public  class HotelTableModel_transaction extends AbstractTableModel {
     public void refreshRow(int row){
         fireTableRowsUpdated(row, row);
     }
+
+
+    public void addOccupancies(occupancies oc) {
+        int row = hotels.size();
+        hotels.add(oc);
+        fireTableRowsInserted(row, row);
+    }
+
+
+
 
 }

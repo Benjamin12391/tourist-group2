@@ -1,5 +1,12 @@
 package org.ui_transactional_data;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+
+
+
+
 import org.example.Hotel;
 import org.example.Hotelutil;
 import org.example.occupancies;
@@ -12,7 +19,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class MainFrame_transaction extends JFrame {
-
+        private HotelTableModel_transaction model;
     public MainFrame_transaction() throws FileNotFoundException {
         super("Main Frame");
         setSize(500,500);
@@ -25,13 +32,12 @@ public class MainFrame_transaction extends JFrame {
 
 
 
-        HotelTableModel_transaction model = new HotelTableModel_transaction((ArrayList<occupancies>) occupanciesutil.master_data_occupancies());
+        this.model = new HotelTableModel_transaction((ArrayList<occupancies>) occupanciesutil.master_data_occupancies());
 
         table.setModel(model);
         table.setAutoCreateRowSorter(true);
-
-
-
+        this.model = new HotelTableModel_transaction((ArrayList<occupancies>) occupanciesutil.master_data_occupancies());
+        table.setModel(model);
         table.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -77,7 +83,22 @@ public class MainFrame_transaction extends JFrame {
 
 
 
+
+
+
+
+
+
+
+
+
     }
+
+    public HotelTableModel_transaction getModel() {
+        return this.model;
+    }
+
+
 
 
 }

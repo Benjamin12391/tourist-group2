@@ -2,9 +2,13 @@ package org.ui_master_data;
 
 import org.example.Hotel;
 import org.example.Hotelutil;
+import org.ui_transactional_data.HotelTableModel_transaction;
+import org.ui_transactional_data.MainFrame_transaction;
+import org.ui_transactional_data.newOccupanciesWindow;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class newHotelwindow extends JFrame {
@@ -68,7 +72,32 @@ public class newHotelwindow extends JFrame {
                     Integer.parseInt(t1[9])
             );
             model.addHotel(hotel);
-            new popup().setVisible(true);
+            int response = JOptionPane.showConfirmDialog(
+                    this,
+                    "Would you like to add occupancies?",
+                    "Create occupancies",
+                    JOptionPane.YES_NO_OPTION
+            );
+            if(response == JOptionPane.YES_OPTION){
+                try {
+                    MainFrame_transaction mftrans= new MainFrame_transaction();
+                    mftrans.setVisible(true);
+                    HotelTableModel_transaction trmodel= mftrans.getModel();
+                    //new MainFrame_transaction().setVisible(true);
+                   new newOccupanciesWindow(newId, trmodel).setVisible(true);
+                } catch (FileNotFoundException ex) {
+                    throw new RuntimeException(ex);
+                }
+
+
+            }
+            else {
+                new popup().setVisible(true);
+            }
+
+
+
+
 
         });
 
