@@ -1,5 +1,8 @@
 package org.ui_master_data;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
 
 
 import org.example.Hotel;
@@ -9,10 +12,12 @@ import java.util.ArrayList;
 
 
 public  class HotelTableModel extends AbstractTableModel {
+
+
     private ArrayList<Hotel> hotels;
 
     private String[] cols= {"id","category","name","owner","contact","address","city","cityCode","phone","noRooms","noBeds"};
-    HotelTableModel(ArrayList<Hotel> hotels){
+    public HotelTableModel(ArrayList<Hotel> hotels){
         this.hotels = hotels;
 
     }
@@ -97,6 +102,17 @@ public  class HotelTableModel extends AbstractTableModel {
         hotels.add(hotel);
         fireTableRowsInserted(row, row);
     }
+
+    public void removeHotelById(int hotelId) {
+        for (int i = 0; i < hotels.size(); i++) {
+            if (hotels.get(i).getId() == hotelId) {
+                hotels.remove(i);
+                fireTableRowsDeleted(i, i);
+                return;
+            }
+        }
+    }
+
     public Hotel getHotel(int in){
         return hotels.get(in);
     }

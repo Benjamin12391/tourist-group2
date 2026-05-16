@@ -1,11 +1,5 @@
 package org.ui_transactional_data;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
-
-
-
 
 import org.example.Hotel;
 import org.example.Hotelutil;
@@ -19,34 +13,34 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class MainFrame_transaction extends JFrame {
-        private HotelTableModel_transaction model;
+        private HotelTableModel_transaction model_transaction;
     public MainFrame_transaction() throws FileNotFoundException {
         super("Main Frame");
         setSize(500,500);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        JTable table= new JTable();
-        //table.setDefaultEditor(Object.class, null);
+        JTable ttable= new JTable();
+        //ttable.setDefaultEditor(Object.class, null);
         ArrayList<Hotel> allhotels=Hotelutil.HotelData();
 
 
 
 
-        this.model = new HotelTableModel_transaction((ArrayList<occupancies>) occupanciesutil.master_data_occupancies());
+        this.model_transaction = new HotelTableModel_transaction((ArrayList<occupancies>) occupanciesutil.master_data_occupancies());
 
-        table.setModel(model);
-        table.setAutoCreateRowSorter(true);
-        this.model = new HotelTableModel_transaction((ArrayList<occupancies>) occupanciesutil.master_data_occupancies());
-        table.setModel(model);
-        table.addMouseListener(new MouseListener() {
+        ttable.setModel(model_transaction);
+        ttable.setAutoCreateRowSorter(true);
+        this.model_transaction = new HotelTableModel_transaction((ArrayList<occupancies>) occupanciesutil.master_data_occupancies());
+        ttable.setModel(model_transaction);
+        ttable.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if(e.getClickCount()==2){
-                    int viewRow = table.getSelectedRow();
+                    int viewRow = ttable.getSelectedRow();
                     if(viewRow >= 0){
-                        int modelRow = table.convertRowIndexToModel(viewRow);
-                        occupancies temp= model.getHotel(modelRow);
-                        new EditingWindow_transaction(MainFrame_transaction.this, temp,()-> model.refreshRow(modelRow)).setVisible(true);
+                        int modelRow = ttable.convertRowIndexToModel(viewRow);
+                        occupancies temp= model_transaction.getHotel(modelRow);
+                        new EditingWindow_transaction(MainFrame_transaction.this, temp,()-> model_transaction.refreshRow(modelRow)).setVisible(true);
                     }
 
                 }
@@ -73,7 +67,7 @@ public class MainFrame_transaction extends JFrame {
 
             }
         });
-        add(new JScrollPane(table));
+        add(new JScrollPane(ttable));
 
 
 
@@ -95,7 +89,7 @@ public class MainFrame_transaction extends JFrame {
     }
 
     public HotelTableModel_transaction getModel() {
-        return this.model;
+        return this.model_transaction;
     }
 
 

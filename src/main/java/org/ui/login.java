@@ -7,10 +7,24 @@ public class login extends JFrame {
     static int ATP=0;
     public login() {
         setTitle("Login");
-        setSize(300,300);
+        setSize(400,420);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        ImageIcon icon = new ImageIcon(getClass().getResource("/logo.jpg"));
+        Image image = icon.getImage().getScaledInstance(220, 100, Image.SCALE_SMOOTH);
 
+        JLabel header = new JLabel(
+                "Welcome to the Lower Austrian Tourist Portal",
+                new ImageIcon(image),
+                JLabel.CENTER
+        );
+
+        header.setHorizontalTextPosition(JLabel.CENTER);
+        header.setVerticalTextPosition(JLabel.BOTTOM);
+        header.setHorizontalAlignment(JLabel.CENTER);
+        header.setIconTextGap(8);
+
+        add(header, BorderLayout.NORTH);
 
 
         JPanel panel = new JPanel(new GridLayout(2,2,10,10));
@@ -44,7 +58,7 @@ public class login extends JFrame {
                 dispose();
             }
             if(user.getText().equals("Senior")&&pass.getText().equals("Senior")){
-                new Senior().setVisible(true);
+                new Senior2().setVisible(true);
                 dispose();
 
             }

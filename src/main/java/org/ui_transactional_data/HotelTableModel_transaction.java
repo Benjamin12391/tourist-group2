@@ -6,6 +6,7 @@ import org.example.occupancies;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public  class HotelTableModel_transaction extends AbstractTableModel {
@@ -13,7 +14,7 @@ public  class HotelTableModel_transaction extends AbstractTableModel {
     private HotelTableModel_transaction model;
 
     private String[] cols= {"id","rooms","usedrooms","beds","usedbeds","year","month"};
-    HotelTableModel_transaction(ArrayList<occupancies> hotels){
+    public HotelTableModel_transaction(ArrayList<occupancies> hotels){
         this.hotels = hotels;
 
     }
@@ -67,6 +68,14 @@ public  class HotelTableModel_transaction extends AbstractTableModel {
         int row = hotels.size();
         hotels.add(oc);
         fireTableRowsInserted(row, row);
+    }
+
+    public void removeRows(int[] rows) {
+        Arrays.sort(rows);
+        for (int i = rows.length - 1; i >= 0; i--) {
+            hotels.remove(rows[i]);
+        }
+        fireTableDataChanged();
     }
 
 
