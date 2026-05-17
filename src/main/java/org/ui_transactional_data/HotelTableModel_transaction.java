@@ -51,6 +51,31 @@ public  class HotelTableModel_transaction extends AbstractTableModel {
     }
 
     @Override
+    public void setValueAt(Object value, int rowIndex, int columnIndex) {
+        occupancies h = hotels.get(rowIndex);
+        int intValue = Integer.parseInt(value.toString());
+
+        switch (columnIndex) {
+            case 1 -> h.setRoom(intValue);
+            case 2 -> h.setUsedrooms(intValue);
+            case 3 -> h.setBeds(intValue);
+            case 4 -> h.setUsedbeds(intValue);
+            case 5 -> h.setYear(intValue);
+            case 6 -> h.setMonth(intValue);
+            default -> {
+                return;
+            }
+        }
+
+        fireTableCellUpdated(rowIndex, columnIndex);
+    }
+
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return columnIndex != 0;
+    }
+
+    @Override
     public Class<?> getColumnClass(int columnIndex) {
         return Integer.class;
     }

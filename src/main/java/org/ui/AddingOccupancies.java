@@ -31,7 +31,10 @@ public class AddingOccupancies extends JFrame {
         });
         htable.setRowSorter(hsorter);
 
+
+
         JTable table = new JTable(tmodel);
+
         TableRowSorter<HotelTableModel_transaction> sorter = new TableRowSorter<>(tmodel);
         sorter.setRowFilter(new RowFilter<>() {
             @Override
@@ -40,6 +43,11 @@ public class AddingOccupancies extends JFrame {
             }
         });
         table.setRowSorter(sorter);
+        // Edit a sinlge cell
+        table.setRowSelectionAllowed(false);
+        table.setColumnSelectionAllowed(false);
+        table.setCellSelectionEnabled(true);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         JSplitPane splitPane = new JSplitPane(
                 JSplitPane.VERTICAL_SPLIT,
