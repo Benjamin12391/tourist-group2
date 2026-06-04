@@ -57,7 +57,7 @@ public class login extends JFrame {
                 new Junior().setVisible(true);
                 dispose();
             }
-            if(user.getText().equals("Senior")&&pass.getText().equals("Senior")){
+            else if(user.getText().equals("Senior")&&pass.getText().equals("Senior")){
                 new Senior2().setVisible(true);
                 dispose();
 
