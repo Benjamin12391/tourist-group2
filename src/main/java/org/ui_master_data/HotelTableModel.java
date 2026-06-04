@@ -15,10 +15,17 @@ public  class HotelTableModel extends AbstractTableModel {
 
 
     private ArrayList<Hotel> hotels;
+    private boolean editable = true;
 
     private String[] cols= {"id","category","name","owner","contact","address","city","cityCode","phone","noRooms","noBeds"};
     public HotelTableModel(ArrayList<Hotel> hotels){
         this.hotels = hotels;
+
+    }
+
+    public HotelTableModel(ArrayList<Hotel> hotels, boolean editable){
+        this.hotels = hotels;
+        this.editable = editable;
 
     }
 
@@ -77,7 +84,7 @@ public  class HotelTableModel extends AbstractTableModel {
     }
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return columnIndex != 0;
+        return editable && columnIndex != 0;
     }
 
     @Override

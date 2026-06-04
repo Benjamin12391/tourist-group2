@@ -12,10 +12,17 @@ import java.util.Arrays;
 public  class HotelTableModel_transaction extends AbstractTableModel {
     private ArrayList<occupancies> hotels;
     private HotelTableModel_transaction model;
+    private boolean editable = true;
 
     private String[] cols= {"id","rooms","usedrooms","beds","usedbeds","year","month"};
     public HotelTableModel_transaction(ArrayList<occupancies> hotels){
         this.hotels = hotels;
+
+    }
+
+    public HotelTableModel_transaction(ArrayList<occupancies> hotels, boolean editable){
+        this.hotels = hotels;
+        this.editable = editable;
 
     }
 
@@ -72,7 +79,7 @@ public  class HotelTableModel_transaction extends AbstractTableModel {
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return columnIndex != 0;
+        return editable && columnIndex != 0;
     }
 
     @Override
