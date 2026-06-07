@@ -3,11 +3,10 @@ package org.ui_master_data;
 import org.example.Hotel;
 import org.example.Hotelutil;
 
-import java.io.FileNotFoundException;
 import java.util.List;
 
 public class summarydata {
-   public static String[][] summarydata() throws FileNotFoundException {
+   public static String[][] summarydata() {
         List<Hotel> hotels= Hotelutil.HotelData();
         int c[]=new int[6];
         double sumbeds[]=new double[6];

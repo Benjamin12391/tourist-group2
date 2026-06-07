@@ -9,28 +9,27 @@ import org.example.occupanciesutil;
 import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class MainFrame_transaction extends JFrame {
         private HotelTableModel_transaction model_transaction;
-    public MainFrame_transaction() throws FileNotFoundException {
+    public MainFrame_transaction() {
         super("Main Frame");
         setSize(500,500);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         JTable ttable= new JTable();
         //ttable.setDefaultEditor(Object.class, null);
-        ArrayList<Hotel> allhotels=Hotelutil.HotelData();
+        ArrayList<Hotel> allhotels=new ArrayList<>(Hotelutil.HotelData());
 
 
 
 
-        this.model_transaction = new HotelTableModel_transaction((ArrayList<occupancies>) occupanciesutil.master_data_occupancies());
+        this.model_transaction = new HotelTableModel_transaction(new ArrayList<>(occupanciesutil.master_data_occupancies()));
 
         ttable.setModel(model_transaction);
         ttable.setAutoCreateRowSorter(true);
-        this.model_transaction = new HotelTableModel_transaction((ArrayList<occupancies>) occupanciesutil.master_data_occupancies());
+        this.model_transaction = new HotelTableModel_transaction(new ArrayList<>(occupanciesutil.master_data_occupancies()));
         ttable.setModel(model_transaction);
         ttable.addMouseListener(new MouseListener() {
             @Override

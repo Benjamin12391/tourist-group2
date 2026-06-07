@@ -7,7 +7,7 @@ import org.ui_transactional_data.MainFrame_transaction;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.FileNotFoundException;
+import javax.swing.JOptionPane;
 
 public class Senior extends javax.swing.JFrame {
     public Senior() {
@@ -21,8 +21,9 @@ public class Senior extends javax.swing.JFrame {
         master.addActionListener(e->{
             try {
                 new MainFrame().setVisible(true);
-            } catch (FileNotFoundException ex) {
-                throw new RuntimeException(ex);
+            } catch (RuntimeException ex) {
+                JOptionPane.showMessageDialog(null, "Failed to open master frame: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                throw ex;
             }
             dispose();
         });
@@ -31,9 +32,9 @@ public class Senior extends javax.swing.JFrame {
         transactional.addActionListener(e->{
             try {
                 new MainFrame_transaction().setVisible(true);
-            } catch (FileNotFoundException ex) {
-                throw new RuntimeException(ex);
-
+            } catch (RuntimeException ex) {
+                JOptionPane.showMessageDialog(null, "Failed to open transactional frame: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                throw ex;
             }
             dispose();
         });

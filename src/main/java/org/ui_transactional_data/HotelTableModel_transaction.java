@@ -3,6 +3,7 @@ package org.ui_transactional_data;
 
 import lombok.Getter;
 import org.example.occupancies;
+import org.example.OccupanciesDAO;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ public  class HotelTableModel_transaction extends AbstractTableModel {
     private ArrayList<occupancies> hotels;
     private HotelTableModel_transaction model;
     private boolean editable = true;
+    private final OccupanciesDAO dao = new OccupanciesDAO();
 
     private String[] cols= {"id","rooms","usedrooms","beds","usedbeds","year","month"};
     public HotelTableModel_transaction(ArrayList<occupancies> hotels){
@@ -75,6 +77,8 @@ public  class HotelTableModel_transaction extends AbstractTableModel {
         }
 
         fireTableCellUpdated(rowIndex, columnIndex);
+        // persist change
+        dao.saveOrUpdate(h);
     }
 
     @Override
@@ -97,14 +101,24 @@ public  class HotelTableModel_transaction extends AbstractTableModel {
 
 
     public void addOccupancies(occupancies oc) {
+        // persist to DB and obtain managed instance (with pk)
+        occupancies managed = dao.saveOrUpdate(oc);
         int row = hotels.size();
-        hotels.add(oc);
+        hotels.add(managed != null ? managed : oc);
         fireTableRowsInserted(row, row);
     }
 
     public void removeRows(int[] rows) {
         Arrays.sort(rows);
         for (int i = rows.length - 1; i >= 0; i--) {
+            occupancies toRemove = hotels.get(rows[i]);
+            // delete from DB
+            try {
+                dao.delete(toRemove);
+            } catch (Exception ex) {
+                // if delete fails, still remove locally but log
+                System.err.println("Failed to delete occupancy: " + ex.getMessage());
+            }
             hotels.remove(rows[i]);
         }
         fireTableDataChanged();

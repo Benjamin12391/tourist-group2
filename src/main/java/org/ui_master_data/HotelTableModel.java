@@ -6,6 +6,7 @@ import lombok.Data;
 
 
 import org.example.Hotel;
+import org.example.HotelDAO;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public  class HotelTableModel extends AbstractTableModel {
 
     private ArrayList<Hotel> hotels;
     private boolean editable = true;
+    private final HotelDAO dao = new HotelDAO();
 
     private String[] cols= {"id","category","name","owner","contact","address","city","cityCode","phone","noRooms","noBeds"};
     public HotelTableModel(ArrayList<Hotel> hotels){
@@ -81,6 +83,8 @@ public  class HotelTableModel extends AbstractTableModel {
         }
 
         fireTableCellUpdated(rowIndex, columnIndex);
+        // persist change to DB
+        dao.saveOrUpdate(h);
     }
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -105,12 +109,16 @@ public  class HotelTableModel extends AbstractTableModel {
         return max;
     }
     public void addHotel(Hotel hotel) {
+        // persist new hotel to DB first (will assign if needed)
+        dao.saveOrUpdate(hotel);
         int row = hotels.size();
         hotels.add(hotel);
         fireTableRowsInserted(row, row);
     }
 
     public void removeHotelById(int hotelId) {
+        // delete from DB
+        dao.deleteById(hotelId);
         for (int i = 0; i < hotels.size(); i++) {
             if (hotels.get(i).getId() == hotelId) {
                 hotels.remove(i);

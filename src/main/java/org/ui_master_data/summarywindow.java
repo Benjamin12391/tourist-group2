@@ -2,10 +2,10 @@ package org.ui_master_data;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.FileNotFoundException;
+import javax.swing.JOptionPane;
 
 public class summarywindow extends JFrame {
-    public summarywindow() throws FileNotFoundException {
+    public summarywindow() {
         super("Summary Window");
         setSize(500,500);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -16,7 +16,13 @@ public class summarywindow extends JFrame {
             label.setHorizontalAlignment(JLabel.CENTER);
             add( label);
             }
-        String[][] s= summarydata.summarydata();
+        String[][] s;
+        try {
+            s = summarydata.summarydata();
+        } catch (RuntimeException e) {
+            JOptionPane.showMessageDialog(null, "Failed to compute summary: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            throw e;
+        }
         for(int i=0;i<s.length;i++){
             for(int j=0;j<s[i].length;j++){
                 JTextField t=new JTextField(s[i][j]);

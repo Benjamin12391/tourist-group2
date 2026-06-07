@@ -16,7 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.FileNotFoundException;
+import javax.swing.JOptionPane;
 import java.util.ArrayList;
 
 public class Junior extends javax.swing.JFrame {
@@ -33,9 +33,10 @@ public class Junior extends javax.swing.JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         try {
-            this.model_transaction = new HotelTableModel_transaction((ArrayList<occupancies>) occupanciesutil.master_data_occupancies(), false);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            this.model_transaction = new HotelTableModel_transaction(new ArrayList<>(occupanciesutil.master_data_occupancies()), false);
+        } catch (RuntimeException e) {
+            JOptionPane.showMessageDialog(null, "Failed to load occupancies: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            throw e;
         }
         JTable ttable= new JTable();
         ttable.setModel(model_transaction);
@@ -50,9 +51,10 @@ public class Junior extends javax.swing.JFrame {
 
         final HotelTableModel model;
         try {
-            model = new HotelTableModel(Hotelutil.HotelData(), false);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            model = new HotelTableModel(new ArrayList<>(Hotelutil.HotelData()), false);
+        } catch (RuntimeException e) {
+            JOptionPane.showMessageDialog(null, "Failed to load hotels: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            throw e;
         }
         sorter = new TableRowSorter<>(model);
         htable.setRowSorter(sorter);
@@ -116,8 +118,9 @@ public class Junior extends javax.swing.JFrame {
             public void mouseClicked(MouseEvent e) {
                 try {
                     new summarywindow().setVisible(true);
-                } catch (FileNotFoundException ex) {
-                    throw new RuntimeException(ex);
+                } catch (RuntimeException ex) {
+                    JOptionPane.showMessageDialog(null, "Failed to open summary: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    throw ex;
                 }
             }
 

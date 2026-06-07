@@ -1,9 +1,6 @@
 package org.ui;
 
-import org.example.Hotel;
-import org.example.Hotelutil;
-import org.example.occupancies;
-import org.example.occupanciesutil;
+import org.example.*;
 import org.ui_master_data.HotelTableModel;
 
 
@@ -19,7 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.FileNotFoundException;
+import javax.swing.JOptionPane;
 import java.util.ArrayList;
 
 public class Senior2 extends JFrame {
@@ -37,8 +34,9 @@ public class Senior2 extends JFrame {
 
         try {
             this.model_transaction = new HotelTableModel_transaction((ArrayList<occupancies>) occupanciesutil.master_data_occupancies());
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+        } catch (RuntimeException e) {
+            JOptionPane.showMessageDialog(null, "Failed to load occupancies: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            throw e;
         }
         JTable ttable= new JTable();
         ttable.setModel(model_transaction);
@@ -52,8 +50,9 @@ public class Senior2 extends JFrame {
         final HotelTableModel model;
         try {
             model = new HotelTableModel(Hotelutil.HotelData());
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+        } catch (RuntimeException e) {
+            JOptionPane.showMessageDialog(null, "Failed to load hotels: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            throw e;
         }
         sorter = new TableRowSorter<>(model);
         htable.setRowSorter(sorter);
@@ -116,8 +115,9 @@ public class Senior2 extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 try {
                     new summarywindow().setVisible(true);
-                } catch (FileNotFoundException ex) {
-                    throw new RuntimeException(ex);
+                } catch (RuntimeException ex) {
+                    JOptionPane.showMessageDialog(null, "Failed to open summary: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    throw ex;
                 }
             }
 
@@ -242,7 +242,17 @@ public class Senior2 extends JFrame {
 
             }
         });
-        west.add(new JLabel(""));
+        JButton button2=new JButton("create PDF");
+
+        button2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new App().setVisible(true);
+            }
+        });
+
+        west.add(button2);
+        //west.add(new JLabel(""));
 
         west.add(new JLabel(""));
         west.add(new JLabel(""));
@@ -251,6 +261,8 @@ public class Senior2 extends JFrame {
         west.add(new JLabel(""));
         west.add(new JLabel(""));
         add(west,BorderLayout.WEST);
+
+
 
 
 

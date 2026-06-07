@@ -8,7 +8,7 @@ import org.ui_transactional_data.newOccupanciesWindow;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.FileNotFoundException;
+import javax.swing.JOptionPane;
 import java.util.ArrayList;
 
 public class newHotelwindow extends JFrame {
@@ -79,15 +79,15 @@ public class newHotelwindow extends JFrame {
                     JOptionPane.YES_NO_OPTION
             );
             if(response == JOptionPane.YES_OPTION){
-                try {
-                    MainFrame_transaction mftrans= new MainFrame_transaction();
-                    mftrans.setVisible(true);
-                    HotelTableModel_transaction trmodel= mftrans.getModel();
-                    //new MainFrame_transaction().setVisible(true);
-                   new newOccupanciesWindow(newId, trmodel).setVisible(true);
-                } catch (FileNotFoundException ex) {
-                    throw new RuntimeException(ex);
-                }
+                    try {
+                        MainFrame_transaction mftrans= new MainFrame_transaction();
+                        mftrans.setVisible(true);
+                        HotelTableModel_transaction trmodel= mftrans.getModel();
+                        new newOccupanciesWindow(newId, trmodel).setVisible(true);
+                    } catch (RuntimeException ex) {
+                        JOptionPane.showMessageDialog(null, "Failed to open transactional frame: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                        throw ex;
+                    }
 
 
             }

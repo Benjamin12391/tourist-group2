@@ -10,14 +10,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.FileNotFoundException;
+import javax.swing.JOptionPane;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
 public class MainFrame extends JFrame {
     private final TableRowSorter<HotelTableModel> sorter;
-    public MainFrame() throws FileNotFoundException {
+    public MainFrame() {
         super("Main Frame");
         setSize(500,500);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -90,8 +90,9 @@ public class MainFrame extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 try {
                     new summarywindow().setVisible(true);
-                } catch (FileNotFoundException ex) {
-                    throw new RuntimeException(ex);
+                } catch (RuntimeException ex) {
+                    JOptionPane.showMessageDialog(null, "Failed to open summary: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    throw ex;
                 }
             }
 
