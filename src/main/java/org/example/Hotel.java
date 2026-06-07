@@ -46,6 +46,32 @@ public class Hotel {
 
     @Column(name = "noBeds")
     int noBeds;
+    @Column(name = "options", nullable = true)
+    String options;
 
-
+    // Keep existing convenience constructor to avoid changing many call sites.
+    public Hotel(int id,
+                 String category,
+                 String name,
+                 String owner,
+                 String contact,
+                 String address,
+                 String city,
+                 String citycode,
+                 String phone,
+                 int noRooms,
+                 int noBeds) {
+        this.id = id;
+        this.category = category;
+        this.name = name;
+        this.owner = owner;
+        this.contact = contact;
+        this.address = address;
+        this.city = city;
+        this.citycode = citycode;
+        this.phone = phone;
+        this.noRooms = noRooms;
+        this.noBeds = noBeds;
+        this.options = ""; // default empty
+    }
 }

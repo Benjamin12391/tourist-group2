@@ -19,7 +19,7 @@ public  class HotelTableModel extends AbstractTableModel {
     private boolean editable = true;
     private final HotelDAO dao = new HotelDAO();
 
-    private String[] cols= {"id","category","name","owner","contact","address","city","cityCode","phone","noRooms","noBeds"};
+    private String[] cols= {"id","category","name","owner","contact","address","city","cityCode","phone","noRooms","noBeds","options"};
     public HotelTableModel(ArrayList<Hotel> hotels){
         this.hotels = hotels;
 
@@ -62,6 +62,7 @@ public  class HotelTableModel extends AbstractTableModel {
             case 8 -> h.getPhone();
             case 9 -> h.getNoRooms();
             case 10 -> h.getNoBeds();
+            case 11 -> h.getOptions();
             default -> null;
         };
     }
@@ -79,12 +80,16 @@ public  class HotelTableModel extends AbstractTableModel {
             case 8 -> h.setPhone(value.toString());
             case 9 -> h.setNoRooms(Integer.parseInt(value.toString()));
             case 10 -> h.setNoBeds(Integer.parseInt(value.toString()));
+            case 11 -> h.setOptions(value.toString());
 
         }
 
+        // persist change to DB and replace with managed entity if returned
+        Hotel managed = dao.saveOrUpdate(h);
+        if (managed != null) {
+            hotels.set(rowIndex, managed);
+        }
         fireTableCellUpdated(rowIndex, columnIndex);
-        // persist change to DB
-        dao.saveOrUpdate(h);
     }
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -109,10 +114,10 @@ public  class HotelTableModel extends AbstractTableModel {
         return max;
     }
     public void addHotel(Hotel hotel) {
-        // persist new hotel to DB first (will assign if needed)
-        dao.saveOrUpdate(hotel);
+        // persist new hotel to DB first and obtain managed instance (with id)
+        Hotel managed = dao.saveOrUpdate(hotel);
         int row = hotels.size();
-        hotels.add(hotel);
+        hotels.add(managed != null ? managed : hotel);
         fireTableRowsInserted(row, row);
     }
 

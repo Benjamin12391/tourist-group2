@@ -19,12 +19,13 @@ public class HotelDAO {
         }
     }
 
-    public void saveOrUpdate(Hotel hotel) {
+    public Hotel saveOrUpdate(Hotel hotel) {
         Transaction tx = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             tx = session.beginTransaction();
-            session.merge(hotel);
+            Hotel managed = (Hotel) session.merge(hotel);
             tx.commit();
+            return managed;
         } catch (Exception e) {
             if (tx != null) tx.rollback();
             throw e;
