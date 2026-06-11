@@ -242,17 +242,7 @@ public class Senior2 extends JFrame {
 
             }
         });
-        JButton button2=new JButton("create PDF");
 
-        button2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new App().setVisible(true);
-            }
-        });
-
-        west.add(button2);
-        //west.add(new JLabel(""));
 
         west.add(new JLabel(""));
         west.add(new JLabel(""));
