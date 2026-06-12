@@ -13,9 +13,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Hotel {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    // NOTE: removed @GeneratedValue because the target SQL Server table does not have
+    // IDENTITY on the id column. We will assign ids in the DAO when needed to avoid
+    // INSERT failures. If you later make the DB column IDENTITY, you can restore
+    // @GeneratedValue(strategy = GenerationType.IDENTITY).
+    private Integer id;
 
     @Column(name = "category")
     String category;
@@ -46,11 +49,14 @@ public class Hotel {
 
     @Column(name = "noBeds")
     int noBeds;
-    @Column(name = "options", nullable = true)
+    // The UI supports an "options" column but the existing DB schema may not have
+    // a corresponding column. Make this field transient so the application can
+    // keep the UI functionality without requiring a DB schema change.
+    @Transient
     String options;
 
     // Keep existing convenience constructor to avoid changing many call sites.
-    public Hotel(int id,
+    public Hotel(Integer id,
                  String category,
                  String name,
                  String owner,

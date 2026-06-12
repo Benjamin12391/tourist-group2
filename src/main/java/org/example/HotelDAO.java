@@ -23,11 +23,30 @@ public class HotelDAO {
         Transaction tx = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             tx = session.beginTransaction();
-            Hotel managed = (Hotel) session.merge(hotel);
+            // Use persist for new entities (id == null) and merge for existing ones
+            if (hotel.getId() == null) {
+                // The DB table may not use IDENTITY for id. Compute a new id safely here
+                // by selecting the current max(id) and incrementing. This is not ideal
+                // for high-concurrency environments but works for small desktop apps.
+                Integer maxId = session.createQuery("select max(h.id) from Hotel h", Integer.class).uniqueResult();
+                int nextId = (maxId == null) ? 1 : (maxId + 1);
+                hotel.setId(nextId);
+                session.persist(hotel);
+            } else {
+                hotel = (Hotel) session.merge(hotel);
+            }
             tx.commit();
-            return managed;
+            // Refresh to get any generated values from DB
+            session.refresh(hotel);
+            return hotel;
         } catch (Exception e) {
-            if (tx != null) tx.rollback();
+            if (tx != null) {
+                try {
+                    tx.rollback();
+                } catch (Exception rollbackEx) {
+                    // Connection might already be closed
+                }
+            }
             throw e;
         }
     }

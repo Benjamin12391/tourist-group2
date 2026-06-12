@@ -39,6 +39,45 @@ public class newHotelwindow extends JFrame {
 
         }
 
+        // Restrict the NoRooms and NoBeds fields to digits only to prevent invalid input
+        try {
+            javax.swing.text.AbstractDocument docRooms = (javax.swing.text.AbstractDocument) t2[8].getDocument();
+            docRooms.setDocumentFilter(new javax.swing.text.DocumentFilter() {
+                @Override
+                public void insertString(FilterBypass fb, int offset, String string, javax.swing.text.AttributeSet attr) throws javax.swing.text.BadLocationException {
+                    if (string != null && string.chars().allMatch(Character::isDigit)) {
+                        super.insertString(fb, offset, string, attr);
+                    }
+                }
+
+                @Override
+                public void replace(FilterBypass fb, int offset, int length, String text, javax.swing.text.AttributeSet attrs) throws javax.swing.text.BadLocationException {
+                    if (text == null || text.chars().allMatch(Character::isDigit)) {
+                        super.replace(fb, offset, length, text, attrs);
+                    }
+                }
+            });
+
+            javax.swing.text.AbstractDocument docBeds = (javax.swing.text.AbstractDocument) t2[9].getDocument();
+            docBeds.setDocumentFilter(new javax.swing.text.DocumentFilter() {
+                @Override
+                public void insertString(FilterBypass fb, int offset, String string, javax.swing.text.AttributeSet attr) throws javax.swing.text.BadLocationException {
+                    if (string != null && string.chars().allMatch(Character::isDigit)) {
+                        super.insertString(fb, offset, string, attr);
+                    }
+                }
+
+                @Override
+                public void replace(FilterBypass fb, int offset, int length, String text, javax.swing.text.AttributeSet attrs) throws javax.swing.text.BadLocationException {
+                    if (text == null || text.chars().allMatch(Character::isDigit)) {
+                        super.replace(fb, offset, length, text, attrs);
+                    }
+                }
+            });
+        } catch (Exception ex) {
+            // If anything goes wrong here, fall back to runtime validation; not critical
+        }
+
         this.add(panel, BorderLayout.CENTER);
         // add a small options chooser and save button in the south
         JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -85,23 +124,34 @@ public class newHotelwindow extends JFrame {
             }
 
             // record is ok
-            int newId=model.maxId()+1;
-            Hotel hotel = new Hotel(
-                    newId,
-                    t1[0],
-                    t1[1],
-                    t1[2],
-                    t1[3],
-                    t1[4],
-                    t1[5],
-                    t1[6],
-                    t1[7],
-                    Integer.parseInt(t1[8]),
-                    Integer.parseInt(t1[9])
-            );
-            // set optional options field
+            // Validate numeric fields (NoRooms, NoBeds) before creating the Hotel
+            int noRooms;
+            int noBeds;
+            try {
+                noRooms = Integer.parseInt(t1[8].trim());
+                noBeds = Integer.parseInt(t1[9].trim());
+            } catch (NumberFormatException nfe) {
+                JOptionPane.showMessageDialog(this, "Please enter valid integer values for 'noRooms' and 'noBeds'", "Invalid input", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Create hotel without ID - Hibernate will auto-generate it
+            Hotel hotel = new Hotel();
+            hotel.setCategory(t1[0]);
+            hotel.setName(t1[1]);
+            hotel.setOwner(t1[2]);
+            hotel.setContact(t1[3]);
+            hotel.setAddress(t1[4]);
+            hotel.setCity(t1[5]);
+            hotel.setCitycode(t1[6]);
+            hotel.setPhone(t1[7]);
+            hotel.setNoRooms(noRooms);
+            hotel.setNoBeds(noBeds);
             hotel.setOptions(t1[10]);
             model.addHotel(hotel);
+            // The DAO may return a different managed instance when saving. Retrieve
+            // the newly added hotel's id from the model to be safe.
+            int newId = model.getHotel(model.getRowCount() - 1).getId(); // Get the auto-generated ID
             int response = JOptionPane.showConfirmDialog(
                     this,
                     "Would you like to add occupancies?",
