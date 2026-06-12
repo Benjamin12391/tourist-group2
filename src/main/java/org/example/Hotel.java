@@ -49,10 +49,10 @@ public class Hotel {
 
     @Column(name = "noBeds")
     int noBeds;
-    // The UI supports an "options" column but the existing DB schema may not have
-    // a corresponding column. Make this field transient so the application can
-    // keep the UI functionality without requiring a DB schema change.
-    @Transient
+    // Persist options to DB. Make sure the `hotel` table has an `options` column
+    // (e.g. NVARCHAR(255) NULL). If the DB doesn't have this column yet, run the
+    // provided migration SQL before using the UI to save options.
+    @Column(name = "options", nullable = true)
     String options;
 
     // Keep existing convenience constructor to avoid changing many call sites.
