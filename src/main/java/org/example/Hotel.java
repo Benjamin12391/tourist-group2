@@ -14,10 +14,7 @@ import lombok.NoArgsConstructor;
 public class Hotel {
     @Id
     @Column(name = "id")
-    // NOTE: removed @GeneratedValue because the target SQL Server table does not have
-    // IDENTITY on the id column. We will assign ids in the DAO when needed to avoid
-    // INSERT failures. If you later make the DB column IDENTITY, you can restore
-    // @GeneratedValue(strategy = GenerationType.IDENTITY).
+
     private Integer id;
 
     @Column(name = "category")
