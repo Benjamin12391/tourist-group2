@@ -39,44 +39,6 @@ public class newHotelwindow extends JFrame {
 
         }
 
-        // Restrict the NoRooms and NoBeds fields to digits only to prevent invalid input
-        try {
-            javax.swing.text.AbstractDocument docRooms = (javax.swing.text.AbstractDocument) t2[8].getDocument();
-            docRooms.setDocumentFilter(new javax.swing.text.DocumentFilter() {
-                @Override
-                public void insertString(FilterBypass fb, int offset, String string, javax.swing.text.AttributeSet attr) throws javax.swing.text.BadLocationException {
-                    if (string != null && string.chars().allMatch(Character::isDigit)) {
-                        super.insertString(fb, offset, string, attr);
-                    }
-                }
-
-                @Override
-                public void replace(FilterBypass fb, int offset, int length, String text, javax.swing.text.AttributeSet attrs) throws javax.swing.text.BadLocationException {
-                    if (text == null || text.chars().allMatch(Character::isDigit)) {
-                        super.replace(fb, offset, length, text, attrs);
-                    }
-                }
-            });
-
-            javax.swing.text.AbstractDocument docBeds = (javax.swing.text.AbstractDocument) t2[9].getDocument();
-            docBeds.setDocumentFilter(new javax.swing.text.DocumentFilter() {
-                @Override
-                public void insertString(FilterBypass fb, int offset, String string, javax.swing.text.AttributeSet attr) throws javax.swing.text.BadLocationException {
-                    if (string != null && string.chars().allMatch(Character::isDigit)) {
-                        super.insertString(fb, offset, string, attr);
-                    }
-                }
-
-                @Override
-                public void replace(FilterBypass fb, int offset, int length, String text, javax.swing.text.AttributeSet attrs) throws javax.swing.text.BadLocationException {
-                    if (text == null || text.chars().allMatch(Character::isDigit)) {
-                        super.replace(fb, offset, length, text, attrs);
-                    }
-                }
-            });
-        } catch (Exception ex) {
-            // If anything goes wrong here, fall back to runtime validation; not critical
-        }
 
         this.add(panel, BorderLayout.CENTER);
         // add a small options chooser and save button in the south
