@@ -61,11 +61,13 @@ public class App extends JFrame {
 
     // Create a statistics table from database
     private JTable createStatsTable() {
+        // Fetch all occupancy data and populate table model
         List<occupancies> allData = occupanciesDAO.findAll();
 
         String[] columns = {"Hotel ID", "Zimmer", "Genutzt", "Betten", "Genutzt", "Jahr", "Monat"};
         Object[][] data = new Object[allData.size()][7];
 
+        // Convert each occupancy record to a row in the table
         for (int i = 0; i < allData.size(); i++) {
             occupancies occ = allData.get(i);
             data[i] = new Object[]{occ.getId(), occ.getRoom(), occ.getUsedrooms(),
@@ -77,6 +79,7 @@ public class App extends JFrame {
 
     // Gather available years from database
     private void populateYearsFromDatabase(JComboBox<String> yearBox) {
+        // Extract unique years from all occupancy records in the database
         List<occupancies> allData = occupanciesDAO.findAll();
         Set<String> years = new TreeSet<>();
 
@@ -84,11 +87,12 @@ public class App extends JFrame {
             years.add(String.valueOf(occ.getYear()));
         }
 
+        // Add collected years to the combo box
         for (String year : years) {
             yearBox.addItem(year);
         }
 
-        // Fallback: add current year
+        // Fallback: add current year if no data exists
         if (yearBox.getItemCount() == 0) {
             yearBox.addItem(String.valueOf(LocalDate.now().getYear()));
         }
@@ -105,8 +109,10 @@ public class App extends JFrame {
         int month = Integer.parseInt(selectedMonth);
         int year = Integer.parseInt(selectedYear);
 
+        // Calculate summary statistics for the selected month
         Stats stats = this.computeStatsFromDatabase(year, month);
 
+        // Create PDF document with occupancy statistics
         File file = new File(String.format("monatsstatistik_%d_%02d.pdf", year, month));
         try (PDDocument doc = new PDDocument()) {
             PDPage page = new PDPage();
@@ -119,6 +125,7 @@ public class App extends JFrame {
                 float x = 60;
                 float y = 750;
 
+                // Write PDF header and summary section
                 writeText(cs, bold, 18, x, y, "Monatsstatistik Hotelauslastung");
                 y -= 30;
                 writeText(cs, font, 12, x, y, String.format("Zeitraum: %02d/%d", month, year));
@@ -127,6 +134,7 @@ public class App extends JFrame {
                 writeText(cs, bold, 12, x, y, "Zusammenfassung:");
                 y -= 20;
 
+                // Display aggregated statistics
                 writeText(cs, font, 11, x, y, "Anzahl Hotels/Einträge: " + stats.records);
                 y -= 18;
                 writeText(cs, font, 11, x, y, "Summe Zimmer: " + stats.totalRooms);
@@ -141,6 +149,7 @@ public class App extends JFrame {
                 writeText(cs, bold, 12, x, y, "Details pro Hotel:");
                 y -= 18;
 
+                // Write hotel-by-hotel breakdown with occupancy percentages
                 List<occupancies> monthData = getMonthlyData(year, month);
                 for (occupancies occ : monthData) {
                     double roomPercent = occ.getRoom() > 0 ? 100.0 * occ.getUsedrooms() / occ.getRoom() : 0;
@@ -150,7 +159,7 @@ public class App extends JFrame {
                             occ.getUsedbeds(), occ.getBeds(), bedPercent);
                     writeText(cs, font, 10, x, y, detail);
                     y -= 15;
-                    if (y < 50) break; // neue Seite wenn nötig
+                    if (y < 50) break; // Stop if we run out of space on current page
                 }
             }
 
@@ -164,8 +173,10 @@ public class App extends JFrame {
 
     private Stats computeStatsFromDatabase(int year, int month) {
         Stats s = new Stats();
+        // Fetch all occupancy records for the given month/year
         List<occupancies> monthData = this.getMonthlyData(year, month);
 
+        // Aggregate room and bed occupancy statistics
         for (occupancies occ : monthData) {
             s.records++;
             s.totalRooms += occ.getRoom();
@@ -174,12 +185,14 @@ public class App extends JFrame {
             s.totalUsedBeds += occ.getUsedbeds();
         }
 
+        // Calculate occupancy percentages
         if (s.totalRooms > 0) s.roomOccupancyPercent = 100.0 * s.totalUsedRooms / s.totalRooms;
         if (s.totalBeds > 0) s.bedOccupancyPercent = 100.0 * s.totalUsedBeds / s.totalBeds;
         return s;
     }
 
     private List<occupancies> getMonthlyData(int year, int month) {
+        // Filter all occupancy data to get records for specific month/year
         List<occupancies> allData = occupanciesDAO.findAll();
         return allData.stream()
                 .filter(occ -> occ.getYear() == year && occ.getMonth() == month)

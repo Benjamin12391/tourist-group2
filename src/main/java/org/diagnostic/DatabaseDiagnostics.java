@@ -94,6 +94,7 @@ public class DatabaseDiagnostics {
             System.out.println("TABELLEN UND SPALTEN");
 
             try (Connection con = getConnection();
+                 // Retrieve all tables from the database metadata
                  ResultSet rs = con.getMetaData().getTables(con.getCatalog(), null, "%", new String[]{"TABLE"})) {
 
                 boolean gefunden = false;
@@ -104,6 +105,7 @@ public class DatabaseDiagnostics {
                     String type = rs.getString("TABLE_TYPE");
 
                     System.out.println("Tabelle : " + schema + "." + table + " | Typ: " + type);
+                    // Enumerate columns for each table
                     pruefeSpalten(con, schema, table);
                     System.out.println();
                     gefunden = true;
@@ -204,6 +206,7 @@ public class DatabaseDiagnostics {
 
                 boolean gefunden = false;
 
+                // Enumerate all columns in the table with their types and constraints
                 while (rs.next()) {
                     String columnName = rs.getString("COLUMN_NAME");
                     String typeName = rs.getString("TYPE_NAME");
@@ -234,6 +237,7 @@ public class DatabaseDiagnostics {
         private static void gibSqlFehlerAus(SQLException e) {
             System.out.println("SQL-FEHLER:");
 
+            // Print all exceptions in the chain (SQL exceptions can be chained)
             SQLException current = e;
             while (current != null) {
                 System.out.println("Nachricht  : " + current.getMessage());

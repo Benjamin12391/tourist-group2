@@ -33,6 +33,7 @@ public class HotelDAO {
                 hotel.setId(nextId);
                 session.persist(hotel);
             } else {
+                // For existing entities, merge to update them in the database
                 hotel = (Hotel) session.merge(hotel);
             }
             tx.commit();

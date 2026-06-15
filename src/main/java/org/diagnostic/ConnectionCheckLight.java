@@ -19,6 +19,7 @@ public class ConnectionCheckLight {
         try (Connection con = DriverManager.getConnection(url, user, password)) {
             System.out.println("Database connection OK");
 
+            // Retrieve and display all available tables in the database
             ResultSet rs = con.getMetaData().getTables(con.getCatalog(), null, "%", new String[]{"TABLE"});
             while (rs.next()) {
                 System.out.println(rs.getString("TABLE_SCHEM") + "." + rs.getString("TABLE_NAME"));

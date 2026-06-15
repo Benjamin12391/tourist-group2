@@ -40,6 +40,7 @@ public class OccupanciesDAO {
             tx = session.beginTransaction();
             // If occ is detached, reattach or load by id
             if (occ.getPk() != null) {
+                // If we have a surrogate key, fetch the managed entity and delete it
                 occupancies managed = session.get(occupancies.class, occ.getPk());
                 if (managed != null) session.remove(managed);
             } else {

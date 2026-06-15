@@ -25,14 +25,16 @@ public class DatabaseSeeder {
     }
 
     private static void seedHotels() throws Exception {
+        // Load hotel master data from CSV file
         String path = "src/main/resources/Hotel.csv";
         Scanner sc = new Scanner(new File(path));
         HotelDAO dao = new HotelDAO();
-        if (sc.hasNextLine()) sc.nextLine();
+        if (sc.hasNextLine()) sc.nextLine();  // Skip header row
         while (sc.hasNextLine()) {
-            String line = sc.nextLine().replace("\"", "");
+            String line = sc.nextLine().replace("\"", "");  // Remove quotes from CSV data
             String[] parts = line.split(",");
             try {
+                // Parse CSV fields into Hotel object
                 int id = Integer.parseInt(parts[0]);
                 String category = parts[1];
                 String name = parts[2];
@@ -42,8 +44,8 @@ public class DatabaseSeeder {
                 String city = parts[6];
                 String cityCode = parts[7];
                 String phone = parts[8];
-                int noRooms = Integer.parseInt(parts[parts.length - 2]);
-                int noBeds = Integer.parseInt(parts[parts.length - 1]);
+                int noRooms = Integer.parseInt(parts[parts.length - 2]);  // Second-to-last field
+                int noBeds = Integer.parseInt(parts[parts.length - 1]);   // Last field
 
                 Hotel h = new Hotel(id, category, name, owner, contact, address, city, cityCode, phone, noRooms, noBeds);
                 dao.saveOrUpdate(h);
@@ -54,6 +56,7 @@ public class DatabaseSeeder {
     }
 
     private static void seedOccupancies() throws Exception {
+        // Load occupancy/transaction data from Hoteldata CSV file
         String path = "src/main/resources/Hoteldata.csv";
         Scanner sc = new Scanner(new File(path));
         OccupanciesDAO dao = new OccupanciesDAO();
@@ -61,6 +64,7 @@ public class DatabaseSeeder {
             String l = sc.nextLine();
             String[] p = l.split(",");
             try {
+                // Parse CSV fields: hotel_id, rooms, usedrooms, beds, usedbeds, year, month
                 int id = Integer.parseInt(p[0]);
                 int room = Integer.parseInt(p[1]);
                 int usedrooms = Integer.parseInt(p[2]);

@@ -1,20 +1,24 @@
-package org.ui_master_data;
 
+package org.ui_master_data;
 import org.example.Hotel;
+import org.example.HotelDAO;
 import org.example.Hotelutil;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class summarydata {
    public static String[][] summarydata() {
-        List<Hotel> hotels= Hotelutil.HotelData();
+        //List<Hotel> hotels= Hotelutil.HotelData();
         int c[]=new int[6];
         double sumbeds[]=new double[6];
         double sumrooms[]=new double[6];
         double avgbeds[]=new double[6];
         double avgrooms[]=new double[6];
+        List<Hotel> hotelList = new HotelDAO().findAll();
 
-        for(Hotel rn:hotels){
+
+        for(Hotel rn:hotelList){
             int cc=rn.getCategory().trim().length();
             if(cc>=1&&cc<=5){
                 c[cc]++;
@@ -37,6 +41,7 @@ public class summarydata {
            s[j-1][1]=""+c[j];
            s[j-1][2]=""+ Math.round(avgbeds[j]*100)/100.0;
            s[j-1][3]=""+ Math.round(avgrooms[j]*100)/100.0;
+
        }
 
        return s;

@@ -14,6 +14,7 @@ public class HibernateUtil {
 
     private static SessionFactory buildSessionFactory() {
         try {
+            // Load configuration from hibernate.cfg.xml file
             StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
                     .configure() // reads hibernate.cfg.xml
                     .build();

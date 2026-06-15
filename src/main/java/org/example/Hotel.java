@@ -49,9 +49,7 @@ public class Hotel {
 
     @Column(name = "noBeds")
     int noBeds;
-    // Persist options to DB. Make sure the `hotel` table has an `options` column
-    // (e.g. NVARCHAR(255) NULL). If the DB doesn't have this column yet, run the
-    // provided migration SQL before using the UI to save options.
+
     @Column(name = "options", nullable = true)
     String options;
 
